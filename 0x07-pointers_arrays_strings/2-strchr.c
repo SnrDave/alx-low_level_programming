@@ -1,4 +1,4 @@
-/**
+/*
 * File: 2-strchr.c
 * Auth: Brennan D Baraban
 */
