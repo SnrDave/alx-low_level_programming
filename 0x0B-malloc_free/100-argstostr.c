@@ -1,62 +1,34 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdlib.h>
 /**
-* strtow - concatenates all the arguments of your program
-*@str: string
-*@av: arguments
-* Return: a pointer to a new string
+* argstostr - Concatenates all arguments of the program into a string;
+*             arguments are separated by a new line in the string.
+* @ac: The number of arguments passed to the program.
+* @av: An array of pointers to the arguments.
+*
+* Return: If ac == 0, av == NULL, or the function fails - NULL.
+*         Otherwise - a pointer to the new string.
 */
-char **strtow(char *str)
+char *argstostr(int ac, char **av)
 {
-int i, w, j, k, count, m, wordf;
-char **p;
-char *x;
-w = 0;
-j = 0;
-i = 0;
-count = 0;
-if (*str == '\0' || str == NULL)
+char *str;
+int arg, byte, index, size = ac;
+if (ac == 0 || av == NULL)
 return (NULL);
-for (i = 0; str[i] != '\0'; i++)
+for (arg = 0; arg < ac; arg++)
 {
-if (str[i] == ' ' && (str[i + 1] != ' ' || str[i + 1] == '\0'))
-w++;
+for (byte = 0; av[arg][byte]; byte++)
+size++;
 }
-p = (char **)malloc((w + 1) * sizeof(char *));
-if (p == NULL)
+str = malloc(sizeof(char) * size + 1);
+if (str == NULL)
 return (NULL);
-for (wordf = 0; str[wordf] && j <= w; wordf++)
+index = 0;
+for (arg = 0; arg < ac; arg++)
 {
-count = 0;
-if (str[wordf] != ' ')
-{
-for (i = wordf ; str[i] != '\0'; i++)
-{
-if (str[i] == ' ')
-break;
-count++;
+for (byte = 0; av[arg][byte]; byte++)
+str[index++] = av[arg][byte];
+str[index++] = '\n';
 }
-*(p + j) = (char *)malloc((count + 1) * sizeof(char));
-if (*(p + j) == NULL)
-{
-for (k = 0; k <= j; k++)
-{
-x = p[k];
-free(x);
-}
-free(p);
-return (NULL);
-}
-for (m = 0; wordf < i; wordf++)
-{
-p[j][m] = str[wordf];
-m++;
-}
-p[j][m] = '\0';
-j++;
-}
-}
-p[j] = NULL;
-return (p);
+str[size] = '\0';
+return (str);
 }
